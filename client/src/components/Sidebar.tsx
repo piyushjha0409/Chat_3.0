@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { ethers } from 'ethers';
 import useMetamask from '../useMetamask';
+import Logo from "../logo2.svg"
 
  interface Props {
   setAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
   account ?: string;
 }
 const Sidebar =  ({ setAccount, account }: Props) => {
+
   //using the hook
   const isMetaMaskInstalled = useMetamask(); //this will give either true or false
 
@@ -18,21 +20,27 @@ const Sidebar =  ({ setAccount, account }: Props) => {
     })
     .then((accounts: string[])=>{
       setAccount(ethers.getAddress(accounts[0]))
-    }).catch((err: any) => console.log(err))
+    })
+    .catch((err: any) => console.log(err))
   }
+
   return (
     <div className='sidebar'>
-     <h1>This is the sidebar!</h1>
+      <h1 className='logo'>
+        <img src={Logo} alt="logo" />
+      </h1>
       {
         account ? (
           <>
-          <b>Conected as:</b>
+          <div className='connected_wallet'>
+          <b>Welcome User!</b>
           <br />
           <small>{account}</small>
+          </div>
           </>
         ) : (
           <>
-          <button disabled={!useMetamask}>Connect with Metamask</button>
+          <button  onClick={handleConnection} disabled={!useMetamask}>Connect with Metamask</button>
           </>
         )
       }

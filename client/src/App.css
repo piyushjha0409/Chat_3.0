@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #715fde;
 }
 
 .App-logo {
@@ -35,4 +36,97 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Mobile responsive media devices code  */
+@media (max-width: 600px) {
+  .sidebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem;
+  }
+  
+  /* sidebar button  */
+  .sidebar button {
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #4574d3;
+    border-radius: 2rem;
+    font-size: var(--mob-font);
+    border: none;
+    color: var(--main-color);
+  }
+  /* button hover  */
+  .sidebar button:hover {
+   background-color: rgb(24, 139, 216);
+   color: aliceblue;
+  }
+  
+  /* connected wallet  */
+  .connected_wallet {
+    overflow: hidden;
+    word-wrap: break-word;
+    
+  }
+  .connected_wallet b{
+    background-color: gray;
+    padding: .1rem;
+    border-radius: .2rem;
+  }
+  .sidebar .logo img{
+    /* margin: 0;
+    padding: 0; */
+    height: 5rem;
+    width: 5rem;
+    background-color: rgb(16, 110, 88); 
+    border-radius: 1rem;
+  }
+}
+
+
+@media (max-width: 2200px){
+  .sidebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem;
+  }
+  
+  /* sidebar button  */
+  .sidebar button {
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #4574d3;
+    border-radius: 2rem;
+    font-size: var(--mob-font);
+    border: none;
+    color: var(--main-color);
+  }
+  /* button hover  */
+  .sidebar button:hover {
+   background-color: rgb(24, 139, 216);
+   color: aliceblue;
+  }
+  
+  /* connected wallet  */
+  .connected_wallet {
+    overflow: hidden;
+    word-wrap: break-word;
+    
+  }
+  .connected_wallet b{
+    background-color: gray;
+    padding: .1rem;
+    border-radius: .2rem;
+  }
+  .sidebar .logo img{
+    /* margin: 0;
+    padding: 0; */
+    height: 5rem;
+    width: 5rem;
+    background-color: rgb(16, 110, 88); 
+    border-radius: 1rem;
+  }
+
 }
