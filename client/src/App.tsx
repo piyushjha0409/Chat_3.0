@@ -13,7 +13,7 @@ function App() {
    <>
    <h1>This is the home page of the application</h1>
    <Sidebar  setAccount={setAccount} account={account} />
-
+   {/* <Chat account={account} chatContract={undefined} /> */}
    </> 
   );
 }
