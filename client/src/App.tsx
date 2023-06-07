@@ -7,7 +7,7 @@ import Sidebar from "./components/Sidebar"
 
 function App() {
   const contractAddress = process.env.CONTRACT_ADDRESS
-  const [account, setAccount] = useState<String>();
+  const [account, setAccount] = useState<string>();
 
   return (
    <>
