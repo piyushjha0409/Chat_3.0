@@ -67,12 +67,14 @@
   .connected_wallet {
     overflow: hidden;
     word-wrap: break-word;
+    color: var(--base);
     
   }
   .connected_wallet b{
     background-color: gray;
     padding: .1rem;
     border-radius: .2rem;
+    color: whitesmoke;
   }
   .sidebar .logo img{
     /* margin: 0;
