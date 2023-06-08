@@ -8,7 +8,7 @@ const useChatContract = (
     account ?: string
 ): ethers.Contract | undefined => {
 
-    const [signer , setSigner] = useState<ethers.JsonRpcSigner>();
+    const [signer , setSigner] = useState<ethers.JsonRpcProvider>();
     const [webthreeProvider, setWebThreeProvider] = useState<ethers.BrowserProvider>()
 
     const {ethereum} = window;
@@ -23,7 +23,9 @@ const useChatContract = (
       if(webthreeProvider && account){
           setSigner(webthreeProvider.getSigner())
       }
-    })
+    }, [account, webthreeProvider])
+
+
 return new
 }
 
