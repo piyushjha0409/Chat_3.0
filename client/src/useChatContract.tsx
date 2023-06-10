@@ -8,8 +8,8 @@ const useChatContract = (
     account ?: string
 ): ethers.Contract | undefined => {
 
-    const [signer , setSigner] = useState<ethers.JsonRpcProvider>();
-    const [webthreeProvider, setWebThreeProvider] = useState<ethers.BrowserProvider>()
+    const [signer , setSigner] = useState<ethers.JsonRpcApiProvider>();
+    const [webthreeProvider, setWebThreeProvider] = useState<ethers.BrowserProvider>();
 
     const {ethereum} = window;
 
@@ -25,8 +25,15 @@ const useChatContract = (
       }
     }, [account, webthreeProvider])
 
+    if(!contractAddress || !web3ChatAbi || !ethereum || !webthreeProvider){
+        return;
+    }
 
-return new
+    return new ethers.Contract(
+        contractAddress,
+        web3ChatAbi,
+        signer || webthreeProvider
+    )
 }
 
 export default useChatContract;
