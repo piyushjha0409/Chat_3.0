@@ -19,7 +19,7 @@ const Sidebar =  ({ setAccount, account }: Props) => {
       method: "eth_requestAccounts"
     })
     .then((accounts: string[])=>{
-      setAccount(ethers.getAddress(accounts[0]))
+      setAccount(ethers.utils.getAddress(accounts[0]))
     })
     .catch((err: any) => console.log(err))
   }

@@ -8,14 +8,14 @@ const useChatContract = (
     account ?: string
 ): ethers.Contract | undefined => {
 
-    const [signer , setSigner] = useState<ethers.JsonRpcApiProvider>();
-    const [webthreeProvider, setWebThreeProvider] = useState<ethers.BrowserProvider>();
+    const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
+    const [webthreeProvider, setWebThreeProvider] = useState<ethers.providers.Web3Provider>();
 
     const {ethereum} = window;
 
     useEffect(() => {
         if(ethereum){
-            setWebThreeProvider(new ethers.BrowserProvider(window.ethereum))
+            setWebThreeProvider(new ethers.providers.Web3Provider(window.ethereum))
         }
     }, [ethereum])
 
