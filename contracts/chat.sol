@@ -17,7 +17,7 @@ contract chat {
 
    //message struct 
     struct message {
-        address sender; 
+        address sender;  //wallet address type is address 
         uint timestamp;
         string msg;
     }

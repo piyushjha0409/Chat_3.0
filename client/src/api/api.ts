@@ -1,21 +1,17 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import { contractAddress, chatContractABI } from "../constants/Constants"
+import { contractAddress, chatContractABI } from "../components/constants/Constants"
 import Web3Modal from "web3modal"
 const Web3 = require("web3")
 
 
-//function for connection to the metamask wallet
-export const  connectWallet = async () =>{
+//function for checking for the wal
+export const  checkIfWalletConnected = async () =>{
     if (typeof window.ethereum !== undefined) {
       // Request permission to access the user's accounts
-      await (window.ethereum as any).request({ method: "eth_requestAccounts" })
-      .then(function(accounts: any){
-        if(accounts.length > 0){
-          const address = accounts[0]
-          return address
-        } 
-      })
+     const accounts =  await (window.ethereum as any).request({ method: "eth_requestAccounts" })
+     console.log(accounts[0])
+     return accounts[0]
   
     } else {
       console.log(
@@ -24,6 +20,19 @@ export const  connectWallet = async () =>{
     }
   }
 
+  //function for connecting the wallet 
+ export const connectWallet = async () => {
+  if (typeof window.ethereum !== undefined) {
+    try{
+      const accounts = await Web3.eth.getAccounts().then(console.log)
+      console.log(accounts[0])
+      const firstAccounts = accounts[0]
+      return firstAccounts;
+    }catch(err){
+      console.log(err)
+    }
+  }
+ }
   //function for fetching the details of the contract
   const fetchContract = (signerOrProvider: any) =>{
     try{
