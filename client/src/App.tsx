@@ -11,12 +11,13 @@ function App() {
 
   const contractAddress = "0x3C3Bd1952a4ed603e6891FB858fFba78BBcF4114Dard04098" 
 
-  const [friend, setFriend] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [myContract, setMyContract] = useState(null);
-  const [myName, setMyName] = useState(null);
-  const [pubKey, setMyPubKey] = useState(null);
-  const [showConnectButton, setShowConnectButton] = useState("block");
+  const [friends, setFriends] = useState<any[] | null>(null);
+  const [myName, setMyName] = useState<string | null>(null);
+  const [myPublicKey, setMyPublicKey] = useState<string | null>(null);
+  const [activeChat, setActiveChat] = useState<{ friendname: string | null, publicKey: string | null }>({ friendname: null, publicKey: null });
+  const [activeChatMessages, setActiveChatMessages] = useState<any[] | null>(null);
+  const [showConnectButton, setShowConnectButton] = useState<string>("block");
+  const [myContract, setMyContract] = useState<any>(null);
 
   //making function for connecting the wallet
   const connectToMetamask = () => {
@@ -57,7 +58,7 @@ function App() {
           await contract.createUser(username);
         }
         setMyName(username);
-        setMyPubKey(address as any);
+        setMyPublicKey(address as any);
         setShowConnectButton("none");
       } catch (err) {
         console.log(err);
@@ -77,8 +78,8 @@ function App() {
       }
       try {
         await myContract.addFriend(publicKey, name);
-        const frnd = { name: name, publicKey: publicKey };
-        setFriends(friends.concat(frnd));
+        const frnd = { "name": name, "publicKey": publicKey };
+        setFriends(friends!.concat(frnd));
       } catch (err) {
         alert(
           "Friend already Added! You can't be friend with the same person twice ;P"
@@ -87,6 +88,25 @@ function App() {
     } catch (err) {
       alert("Invalid address!");
     }
+  }
+
+  //function for adding the chat message 
+  const sendMessage = async (data: string) => {
+    if(!(activeChat && activeChat.publicKey )) return;
+    const receiverAddress = activeChat.publicKey;
+    await myContract.sendMessage(receiverAddress, data);
+  }
+
+  //function for fetching the chat messages with a friend
+  const getMessage = async (friendPublicKey: string) => {
+    let nickName :string | undefined;
+    let messages: any[] = [];
+    friends!.forEach(element => {
+      if(element.publicKey === friendPublicKey){
+        nickName = element.name
+      }
+    });
+
   }
   return (
     <BrowserRouter>
