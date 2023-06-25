@@ -99,13 +99,20 @@ function App() {
 
   //function for fetching the chat messages with a friend
   const getMessage = async (friendPublicKey: string) => {
-    let nickName :string | undefined;
+    let nickName :string | null = null;
     let messages: any[] = [];
     friends!.forEach(element => {
       if(element.publicKey === friendPublicKey){
         nickName = element.name
       }
     });
+    //Now get messages
+    const data = await myContract.readMessage(friendPublicKey)
+    data.forEach(( item )=>{
+         const timestamp = new Date(1000*item[1].toNumber()).toUTCString();
+         messages.push({"publicKey": item[0], "timestamp": timestamp, "data": item[2]})
+    });
+    setActiveChat({ friendname: nickName, publicKey: friendPublicKey})
 
   }
   return (
