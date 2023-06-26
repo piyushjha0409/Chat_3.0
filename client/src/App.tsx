@@ -1,15 +1,13 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {
-  chatContractABI,
-} from "../src/components/constants/Constants";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import {abi} from "../src/components/abi"
 import Chat from "./components/chat/Chat";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 function App() {
 
-  const contractAddress = "0x3C3Bd1952a4ed603e6891FB858fFba78BBcF4114Dard04098" 
+  const contractAddress = "0xF02C9B63dDaA173AA8a7794B559200A3f0418E92" 
 
   const [friends, setFriends] = useState<any[] | null>(null);
   const [myName, setMyName] = useState<string | null>(null);
@@ -20,14 +18,20 @@ function App() {
   const [myContract, setMyContract] = useState<any>(null);
 
   //making function for connecting the wallet
-  const connectToMetamask = () => {
-    try {
-      (window.ethereum as any).enable();
-      return true;
-    } catch (err) {
-      return false;
-      console.error(err);
-    }
+  const connectToMetamask = async () => {
+    if (window.ethereum) {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+          // Request account access if needed
+          await provider.send(
+              "eth_requestAccounts", []
+          );
+          return true
+      } catch (error) {
+          console.error(error)
+          return false
+      }
+  }
   };
 
   //function for login
@@ -41,14 +45,14 @@ function App() {
       //now we will try connecting the contract
       try {
         const contract = new ethers.Contract(
-          contractAddress as string,
-          chatContractABI,
+          contractAddress,
+          abi,
           signer
         );
-        setMyContract(contract as any);
+        setMyContract(contract);
         const address = await signer.getAddress();
         //checking if user exists or not
-        const present = await contract.checkUserExists(address);
+        const present = await contract.checkUserExists( address )
 
         let username;
         if (present) {
@@ -108,19 +112,61 @@ function App() {
     });
     //Now get messages
     const data = await myContract.readMessage(friendPublicKey)
-    data.forEach(( item )=>{
+    data.forEach(( item: any )=>{
          const timestamp = new Date(1000*item[1].toNumber()).toUTCString();
          messages.push({"publicKey": item[0], "timestamp": timestamp, "data": item[2]})
     });
     setActiveChat({ friendname: nickName, publicKey: friendPublicKey})
-
+    setActiveChatMessages( messages )
   }
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Chat" element={<Chat />} />
-      </Routes>
-    </BrowserRouter>
+
+  useEffect(() => {
+  const loadFriends = async () => {
+   //make  an empty array for the friend list 
+   let friendList: any = [];
+   //get friends
+   try{
+    const data = await myContract.getMyFriendList();
+    data.array.forEach((element: any) => {
+      friendList.push({ "PublicKey": element[0], "name": element[1]})
+    });
+   }catch(err){
+    friendList = null;
+   }
+   setFriends(friendList)
+   console.log(friendList);
+  }
+  loadFriends(); //calling the function 
+  }, [myPublicKey, myContract])
+
+
+  //Message component
+const Messages = activeChatMessages ? activeChatMessages.map((message) => {
+  let margin = "5%"
+  let sender = activeChat.friendname;
+  if( message.publicKey === myPublicKey) {
+    margin = "15%"
+    sender = "You"
+  }
+  return(
+  <>
+  
+  </>)
+}) : null
+
+
+//display each chat cards
+// const chat = friends ? friends.map((data) => {
+//   return (
+//     <Chat publicKey={friends.publicKey} name={friends.name}/>
+
+//   )
+// }) : null
+
+return (
+       <>
+       <button onClick={connectToMetamask}>Connect walllet</button>
+       </>
   );
 }
 

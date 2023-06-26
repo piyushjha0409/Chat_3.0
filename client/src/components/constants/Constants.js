@@ -1,4 +1,4 @@
-import chat from "../constants/Chat.json";
+import chat from "../abi";
 
 //address of the contract
 export const contractAddress =  process.env.CONTRACT_ADDRESS
